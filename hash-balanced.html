@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="only light">
+<title>Cremers — Hash</title>
+<style>
+:root{color-scheme:only light;--gold:#b5852f;--gold2:#d8b46d;--line:#dfcfaa;--ink:#111;--black:#111}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff!important;color:#111!important;font-family:Arial,Helvetica,sans-serif}
+body{overflow-x:hidden}
+.screen{position:relative;width:min(100vw,56.25vh);height:min(177.7778vw,100vh);margin:0 auto;background:#fff;overflow:hidden}
+@media(max-aspect-ratio:9/16){.screen{width:100vw;height:177.7778vw}}
+.frame{position:absolute;inset:1.2%;border:1px solid var(--gold);padding:2.3% 3%}
+.brand{text-align:center}
+.brand img{width:36%;max-height:8%;object-fit:contain}
+.kicker{font-size:clamp(7px,1vw,28px);letter-spacing:.28em;text-transform:uppercase}
+h1{margin:1% 0 0;font:500 clamp(34px,6vw,126px)/.9 Georgia,"Times New Roman",serif;text-transform:uppercase}
+h1 span{display:block;color:var(--gold);font-size:45%;letter-spacing:.24em;margin-top:.8%}
+.orn{width:42%;margin:1% auto 4.2%;color:var(--gold);display:flex;align-items:center;gap:10px}
+.orn:before,.orn:after{content:"";height:1px;background:var(--gold);flex:1}
+.menu{width:97%;margin:auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.3%;align-items:start}
+.panel{border:1px solid var(--line);border-radius:7px;padding:2.6% 3%;background:#fff;min-width:0}
+.panel-title{margin:-8% 0 4%;padding:4% 2%;border:2px solid var(--gold);border-radius:6px;background:var(--black);color:var(--gold2);text-align:center;font-size:clamp(9px,1.45vw,38px);font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+.farm{padding:4.5% 0 2.5%;color:var(--gold);font-size:clamp(8px,1.25vw,30px);font-weight:800;letter-spacing:.10em;text-transform:uppercase;border-bottom:1px solid rgba(181,133,47,.35)}
+.item{padding:3.7% 0 4.2%;border-bottom:1px solid rgba(181,133,47,.22)}
+.top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:baseline}
+.name{font-size:clamp(10px,1.7vw,41px);line-height:1.03;font-weight:800;text-transform:uppercase;overflow-wrap:normal;word-break:normal}
+.price{font-size:clamp(10px,1.65vw,40px);font-weight:800;white-space:nowrap;text-align:right}
+.deal{display:inline-block;margin-top:2%;padding:2px 5px;border-radius:3px;background:var(--gold);color:#fff;font-size:clamp(6px,.85vw,20px);font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.footer{position:absolute;left:9%;right:9%;bottom:2.5%;padding:1.3% 2%;background:var(--black);color:var(--gold2);border:2px solid var(--gold);border-radius:6px;text-align:center}
+.footer strong{display:block;font-size:clamp(8px,1.25vw,31px);letter-spacing:.15em;text-transform:uppercase}
+.footer small{display:block;margin-top:.4%;font-size:clamp(5px,.7vw,18px);letter-spacing:.1em;text-transform:uppercase}
+#loading{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--gold);text-transform:uppercase;letter-spacing:.12em}
+</style>
+</head>
+<body>
+<main class="screen">
+  <div class="frame">
+    <header class="brand">
+      <img src="cremers-logo.png" alt="Cremers">
+      <div class="kicker">Coffeeshop · Since 1990</div>
+      <h1>Hash <span>Premium Selection</span></h1>
+      <div class="orn">✦</div>
+    </header>
+
+    <div id="loading">Loading menu…</div>
+
+    <section id="menu" class="menu" hidden>
+      <div class="panel"><div class="panel-title">Hash Selection</div><div id="col1"></div></div>
+      <div class="panel"><div class="panel-title">Hash Selection</div><div id="col2"></div></div>
+      <div class="panel"><div class="panel-title">Hash Selection</div><div id="col3"></div></div>
+    </section>
+
+    <footer class="footer">
+      <strong>Premium Hash Selection</strong>
+      <small>Carefully selected · Always top quality</small>
+    </footer>
+  </div>
+</main>
+
+<script>
+const URL="https://script.google.com/macros/s/AKfycbx2tgVQp13EdurZ22_HAafU_DK_9EKnx6bQRdx8JLLBedQr9J7xQxkxICfOwsWgpVveYA/exec";
+const SEED_DATA=[{"Farm": "Original Beldia Maroc", "Strain": "King Muh", "Price": "€ 11,00", "Deal": "5 GRAM €50"}, {"Farm": "Original Beldia Maroc", "Strain": "Hia Blond (Zagro Gold Farm)", "Price": "€ 10,00", "Deal": "5 GRAM €45"}, {"Farm": "De Heertjes", "Strain": "Tangerine", "Price": "€ 9,00", "Deal": ""}, {"Farm": "Amsterdam Hash Boyz", "Strain": "Tropical Bloom", "Price": "€ 10,00", "Deal": ""}, {"Farm": "Amsterdam Hash Boyz", "Strain": "White Choco", "Price": "€ 10,00", "Deal": ""}, {"Farm": "Amsterdam Hash Boyz", "Strain": "Dry Fruit", "Price": "€ 11,00", "Deal": ""}, {"Farm": "Amsterdam Hash Boyz", "Strain": "Gorilla Zkittlez", "Price": "€ 14,00", "Deal": ""}, {"Farm": "Narcos Farms", "Strain": "Tahoe Kush", "Price": "€ 11,00", "Deal": ""}, {"Farm": "Mountain Giants", "Strain": "Jelly Donutz", "Price": "€ 12,00", "Deal": ""}, {"Farm": "Mountain Giants", "Strain": "Bubba Runtz", "Price": "€ 12,00", "Deal": ""}, {"Farm": "Kilogrammes Farms", "Strain": "Grape Gas", "Price": "€ 11,00", "Deal": ""}, {"Farm": "Seedsherenow.com", "Strain": "Nicole Kush", "Price": "€ 11,00", "Deal": ""}, {"Farm": "Zift Hills", "Strain": "Rainbow Chip x Pink Limez", "Price": "€ 13,00", "Deal": ""}, {"Farm": "Zift Hills", "Strain": "Platinum OG Punch", "Price": "€ 13,00", "Deal": ""}, {"Farm": "Zift Hills", "Strain": "Fantasy Melon x Zkittlez", "Price": "€ 13,00", "Deal": ""}, {"Farm": "Zift Hills", "Strain": "Zkittlez", "Price": "€ 14,00", "Deal": ""}, {"Farm": "Zift Hills", "Strain": "Razberry x Papaya Dawg x Pink Limez", "Price": "€ 16,00", "Deal": ""}, {"Farm": "Paranoia Farm", "Strain": "Gas Berry", "Price": "€ 11,00", "Deal": ""}, {"Farm": "Static Fanatic", "Strain": "Fanati", "Price": "€ 25,00", "Deal": ""}, {"Farm": "Total Farm", "Strain": "Forbidden Fruit", "Price": "€ 14,00", "Deal": ""}, {"Farm": "Total Farm", "Strain": "Papaya Dawg", "Price": "€ 14,00", "Deal": ""}, {"Farm": "Total Farm", "Strain": "Zedlousy", "Price": "€ 16,00", "Deal": ""}, {"Farm": "Exotic", "Strain": "Kashmir", "Price": "€ 14,00", "Deal": ""}];
+let loader;
+
+const safe=v=>String(v??"")
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
+
+function euro(v){
+  const raw=String(v??"").trim().replace("€","").replace(",",".");
+  const n=Number(raw);
+  return Number.isFinite(n)
+    ? "€"+n.toLocaleString("nl-NL",{minimumFractionDigits:n%1===0?0:2,maximumFractionDigits:2})
+    : safe(v);
+}
+
+function groupRows(rows){
+  const groups=[];
+  const map=new Map();
+  rows.forEach(row=>{
+    const farm=String(row.Farm??"").trim() || "Other";
+    if(!map.has(farm)){
+      const group={farm,items:[]};
+      map.set(farm,group);
+      groups.push(group);
+    }
+    map.get(farm).items.push(row);
+  });
+  return groups;
+}
+
+function splitGroups(groups){
+  /* Balance whole farm groups across the three columns.
+     A farm heading also uses vertical space, so count it as ~0.65 item.
+     Farms stay together, but the visual column heights become much closer. */
+  const cols=[[],[],[]];
+  const heights=[0,0,0];
+
+  groups.forEach(group=>{
+    const weight=group.items.length + 0.65;
+    let shortest=0;
+
+    if(heights[1] < heights[shortest]) shortest=1;
+    if(heights[2] < heights[shortest]) shortest=2;
+
+    cols[shortest].push(group);
+    heights[shortest]+=weight;
+  });
+
+  return cols;
+}
+
+function groupHTML(group){
+  const items=group.items.map(item=>`
+    <article class="item">
+      <div class="top">
+        <div class="name">${safe(item.Strain)}</div>
+        <div class="price">${euro(item.Price)}</div>
+      </div>
+      ${item.Deal ? `<span class="deal">${safe(item.Deal)}</span>` : ""}
+    </article>
+  `).join("");
+
+  return `<section class="group">
+    <div class="farm">${safe(group.farm)}</div>
+    ${items}
+  </section>`;
+}
+
+function cremersMenuData(rows){
+  try{
+    const clean=rows.filter(r=>String(r.Strain??"").trim()!=="");
+    const groups=groupRows(clean);
+    const cols=splitGroups(groups);
+
+    document.getElementById("col1").innerHTML=cols[0].map(groupHTML).join("");
+    document.getElementById("col2").innerHTML=cols[1].map(groupHTML).join("");
+    document.getElementById("col3").innerHTML=cols[2].map(groupHTML).join("");
+
+    document.getElementById("loading").hidden=true;
+    document.getElementById("menu").hidden=false;
+
+    localStorage.setItem("cremersHashCache",JSON.stringify(rows));
+  }catch(e){console.error(e)}
+}
+
+try{
+  const cache=JSON.parse(localStorage.getItem("cremersHashCache")||"null");
+  if(Array.isArray(cache)&&cache.length){cremersMenuData(cache)}
+}catch(e){}
+
+function refresh(){
+  if(loader) loader.remove();
+
+  loader=document.createElement("script");
+  loader.src=URL+"?tab=Hash&callback=cremersMenuData&_="+Date.now();
+
+  loader.onerror=()=>{
+    console.warn("Live Hash update failed; keeping current menu.");
+  };
+
+  document.body.appendChild(loader);
+}
+
+/* Show useful menu immediately, then replace with cache/live Sheet data. */
+let initial=SEED_DATA;
+
+try{
+  const cached=JSON.parse(localStorage.getItem("cremersHashCache")||"null");
+  if(Array.isArray(cached) && cached.length){
+    initial=cached;
+  }
+}catch(e){}
+
+cremersMenuData(initial);
+refresh();
+setInterval(refresh,60000);
+</script>
+</body>
+</html>
