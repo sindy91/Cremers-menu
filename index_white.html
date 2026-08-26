@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="only light">
+<title>Cremers — Californian Specials</title>
+<style>
+:root{
+  color-scheme:only light;
+  --cream:#ffffff;
+  --cream2:#ffffff;
+  --ink:#11110f;
+  --gold:#b3842f;
+  --gold2:#d7b369;
+  --muted:#786748;
+  --line:#d8c6a1;
+  --black:#111111;
+}
+*{box-sizing:border-box;forced-color-adjust:none}
+html,body{
+  margin:0;background:var(--cream)!important;color:var(--ink)!important;
+  font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;
+}
+.viewport{
+  width:100vw;height:100vh;overflow:hidden;display:flex;
+  justify-content:center;align-items:flex-start;background:var(--cream)!important;
+}
+.scaler{position:relative;flex:none}
+.screen{
+  width:2160px;height:3840px;transform-origin:top left;position:relative;overflow:hidden;
+  padding:72px 82px 70px;
+  background:#ffffff!important;
+}
+.screen:before{content:"";position:absolute;inset:26px;border:4px solid var(--gold);pointer-events:none}
+.corner{position:absolute;color:var(--gold);font:58px Georgia,serif;z-index:2}
+.c1{left:40px;top:28px}.c2{right:40px;top:28px;transform:scaleX(-1)}
+.c3{left:40px;bottom:28px;transform:scaleY(-1)}
+.c4{right:40px;bottom:28px;transform:scale(-1)}
+
+.brand{text-align:center;position:relative;z-index:1}
+.brand img{width:610px;max-height:215px;object-fit:contain;display:block;margin:0 auto 4px}
+.kicker{font-size:25px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);margin-top:2px}
+.title{
+  margin:22px 0 0;font:500 102px/.92 Georgia,"Times New Roman",serif;
+  letter-spacing:.035em;text-transform:uppercase
+}
+.title span{display:block;color:var(--gold);font-size:76px;letter-spacing:.22em;margin-top:17px}
+.ornament{margin:18px auto 0;width:720px;display:flex;align-items:center;gap:18px;color:var(--gold)}
+.ornament:before,.ornament:after{content:"";height:2px;background:var(--gold);flex:1;opacity:.75}
+.ornament b{font:400 30px Georgia,serif}
+
+.menu{
+  margin-top:55px;height:2980px;display:grid;
+  grid-template-columns:.88fr 1.42fr;gap:54px;
+}
+.panel{
+  position:relative;border:2px solid var(--line);background:#ffffff;
+  box-shadow:0 8px 28px rgba(70,50,20,.06);padding:30px 30px 26px;border-radius:18px
+}
+.panel-title{
+  margin:-53px 0 30px;background:var(--black);color:var(--gold2);
+  border:4px solid var(--gold);border-radius:14px;padding:20px 22px;text-align:center;
+  font-size:39px;font-weight:800;letter-spacing:.10em;text-transform:uppercase
+}
+.panel-title:before{content:"❧";margin-right:14px;color:var(--gold)}
+.panel-title:after{content:"❧";margin-left:14px;color:var(--gold);display:inline-block;transform:scaleX(-1)}
+
+.prefab .items{display:flex;flex-direction:column;height:2500px;justify-content:space-between}
+.prefab .item{border-bottom:2px solid rgba(181,132,47,.34);padding:20px 0 30px}
+.prefab .name{font:700 58px/1.02 Georgia,"Times New Roman",serif;text-transform:uppercase}
+.prefab .price{font-size:54px;font-weight:800}
+.prefab .meta{margin-top:12px;font-size:24px;letter-spacing:.05em}
+
+.onegram .items{
+  display:grid;grid-template-columns:1fr 1fr;
+  column-gap:32px;row-gap:0;align-content:start
+}
+.onegram .item{
+  border-bottom:2px solid rgba(181,132,47,.28);
+  padding:11px 0 13px;min-height:116px
+}
+.onegram .name{font-size:35px;line-height:1.02;font-weight:800;text-transform:uppercase}
+.onegram .price{font-size:35px;font-weight:800}
+.onegram .meta{margin-top:5px;font-size:18px;letter-spacing:.035em}
+
+.topline{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:20px}
+.meta{display:flex;justify-content:space-between;gap:14px;color:var(--gold);text-transform:uppercase;font-weight:700}
+.deal{color:#fff;background:var(--gold);padding:5px 8px;border-radius:5px;white-space:nowrap;font-weight:800}
+.wheat{margin:42px auto 0;width:78%;text-align:center;color:var(--gold);font:50px Georgia,serif;letter-spacing:.08em}
+
+.footer{
+  margin:46px auto 0;width:82%;background:var(--black);color:var(--gold2);
+  border:4px solid var(--gold);border-radius:14px;padding:22px 34px;text-align:center
+}
+.footer strong{display:block;font-size:28px;letter-spacing:.16em;text-transform:uppercase}
+.footer span{display:block;margin-top:7px;font-size:17px;letter-spacing:.13em;text-transform:uppercase}
+
+.status{margin-top:90px;text-align:center;font-size:28px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="viewport"><div class="scaler" id="scaler"><main class="screen" id="screen">
+<div class="corner c1">⌜</div><div class="corner c2">⌜</div><div class="corner c3">⌜</div><div class="corner c4">⌜</div>
+
+<header class="brand">
+  <img src="cremers-logo.png" alt="Cremers Est. 1990">
+  <div class="kicker">Coffeeshop · Since 1990</div>
+  <h1 class="title">Californian <span>Specials</span></h1>
+  <div class="ornament"><b>✦</b></div>
+</header>
+
+<div id="status" class="status" hidden></div>
+
+<section id="menu" class="menu">
+  <div class="panel prefab">
+    <div class="panel-title">3.5 Gram Prefab</div>
+    <div id="prefab" class="items"></div>
+    <div class="wheat">❧ ❧ ❧</div>
+  </div>
+
+  <div class="panel onegram">
+    <div class="panel-title">1 Gram</div>
+    <div id="onegram" class="items"></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <strong>Premium Californian Genetics</strong>
+  <span>Carefully selected · Properly grown · Perfectly cured</span>
+</footer>
+</main></div></div>
+
+<script>
+const DATA_URL="https://script.google.com/macros/s/AKfycbzyziBjFgHMdxzKvToZ_4Hs5j7gF4xD6Vzk67F6ylPQwzEHN_jNrbtWa6TKtUKXizrdbw/exec";
+const SEED_DATA=[{"Screen": "1", "Section": "3.5 gram Prefab", "Product": "Zheetos", "Farm": "Karma Cartel", "Price": "100", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "3.5 gram Prefab", "Product": "Frank Dukez", "Farm": "Karma Cartel", "Price": "100", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "3.5 gram Prefab", "Product": "Double Lemon", "Farm": "Rimmikusu", "Price": "100", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "3.5 gram Prefab", "Product": "Lucy Zkittlez Bx2 x OZ Kush", "Farm": "Don Merfos", "Price": "75", "Available": "TRUE", "Deal": "Sale"}, {"Screen": "1", "Section": "3.5 gram Prefab", "Product": "Kill the CEO", "Farm": "Heavy Loads", "Price": "70", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Toad Venom", "Farm": "Genetics by G", "Price": "28", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "OG", "Farm": "Genetics by G", "Price": "24", "Available": "TRUE", "Deal": "3.5 gram €77"}, {"Screen": "1", "Section": "1 gram", "Product": "Zquirt", "Farm": "Genetics by G", "Price": "24", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Pina Real", "Farm": "Genetics by G", "Price": "24", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Planet Peach", "Farm": "Heavy Loads", "Price": "23", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Blue Bubble Soap", "Farm": "Hushh Farms", "Price": "19", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Mother of Berries Pheno #3", "Farm": "LA Farms", "Price": "13.50", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Gelonade", "Farm": "LA Farms", "Price": "13.50", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Permanent Marker", "Farm": "East Coast Farmers", "Price": "13.50", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Candy Gusher", "Farm": "LA Farms", "Price": "13.50", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Pink Pez", "Farm": "East Coast Farmers", "Price": "13.50", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Cherry Biscotti", "Farm": "Cookies Farm Genetics", "Price": "13.50", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Lemon Gelato", "Farm": "American Flower", "Price": "13", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Banana Runtz", "Farm": "Barneys Farm", "Price": "12.50", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Chocolatina", "Farm": "American Flower", "Price": "12", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Zkittali", "Farm": "Raw Genetics", "Price": "12", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Blue Nerds", "Farm": "American Flower", "Price": "12", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Lemon x LCG", "Farm": "West Coast Genetics", "Price": "12", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Starburst", "Farm": "American Flower", "Price": "12", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Jalisco Runtz", "Farm": "American Flower", "Price": "12", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Medusa", "Farm": "LA Farms", "Price": "12", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "China Dolls", "Farm": "LA Farms", "Price": "12", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Zenzai", "Farm": "American Flower", "Price": "12", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Bling Berry", "Farm": "West Coast Genetics", "Price": "12", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Candy Crush", "Farm": "East Coast Farmers", "Price": "12", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Pink Runtz", "Farm": "American Flower", "Price": "11", "Available": "TRUE", "Deal": ""}, {"Screen": "1", "Section": "1 gram", "Product": "Strawberry Runtz", "Farm": "American Flower", "Price": "11", "Available": "TRUE", "Deal": ""}];
+let loader;
+
+function esc(v){
+  return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+function yes(v){
+  return ["true","yes","1","x","✓","checked"].includes(String(v??"").trim().toLowerCase());
+}
+function euro(v){
+  const n=Number(String(v??"").trim().replace(",","."));
+  if(!Number.isFinite(n)) return esc(v);
+  return "€"+n.toLocaleString("nl-NL",{minimumFractionDigits:n%1===0?0:2,maximumFractionDigits:2});
+}
+function rowHTML(x){
+  return `<article class="item">
+    <div class="topline"><div class="name">${esc(x.Product)}</div><div class="price">${euro(x.Price)}</div></div>
+    <div class="meta"><span>${esc(x.Farm||"")}</span>${x.Deal?`<span class="deal">${esc(x.Deal)}</span>`:""}</div>
+  </article>`;
+}
+function render(rows){
+  const data=rows.filter(r=>String(r.Screen??"").trim()==="1"&&yes(r.Available)&&String(r.Product??"").trim()!=="");
+  const prefab=data.filter(r=>String(r.Section??"").toLowerCase().includes("3.5"));
+  const one=data.filter(r=>String(r.Section??"").toLowerCase().includes("1 gram"));
+  document.getElementById("prefab").innerHTML=prefab.map(rowHTML).join("");
+  document.getElementById("onegram").innerHTML=one.map(rowHTML).join("");
+  fit();
+}
+function cremersMenuData(rows){
+  try{
+    render(rows);
+    localStorage.setItem("cremers-screen1-cache",JSON.stringify(rows));
+  }catch(e){console.error(e)}
+}
+function load(){
+  if(loader) loader.remove();
+  loader=document.createElement("script");
+  loader.src=DATA_URL+"?callback=cremersMenuData&_="+Date.now();
+  loader.onerror=()=>console.warn("Live refresh failed; cached menu remains visible.");
+  document.body.appendChild(loader);
+}
+function fit(){
+  const s=document.getElementById("screen"),c=document.getElementById("scaler");
+  const scale=Math.min(innerWidth/2160,innerHeight/3840);
+  s.style.transform=`scale(${scale})`;
+  c.style.width=(2160*scale)+"px"; c.style.height=(3840*scale)+"px";
+}
+
+let initial=SEED_DATA;
+try{
+  const cached=JSON.parse(localStorage.getItem("cremers-screen1-cache")||"null");
+  if(Array.isArray(cached)&&cached.length) initial=cached;
+}catch(e){}
+render(initial);
+
+addEventListener("resize",fit);
+fit();
+load();
+setInterval(load,60000);
+</script>
+</body>
+</html>
