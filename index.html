@@ -2,331 +2,396 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<meta
+  name="viewport"
+  content="width=device-width,
+  initial-scale=1,
+  maximum-scale=1,
+  user-scalable=no,
+  viewport-fit=cover"
+>
+
 <meta name="color-scheme" content="only light">
 
 <title>Cremers — Californian Specials</title>
 
 <style>
+
 :root {
   color-scheme: only light;
+
   --white: #ffffff;
   --ink: #111111;
+
   --gold: #b5852f;
-  --gold-light: #d8b46d;
+  --gold2: #d8b46d;
+
   --line: #dfcfaa;
-  --muted: #77684c;
   --black: #111111;
 }
+
 
 * {
   box-sizing: border-box;
   forced-color-adjust: none;
 }
 
+
 html,
 body {
   margin: 0;
+  min-height: 100%;
+
   background: #ffffff !important;
   color: var(--ink) !important;
-  font-family: Arial, Helvetica, sans-serif;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
   -webkit-text-size-adjust: 100%;
 }
 
+
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+
 .viewport {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  width: 100%;
+  min-height: 100vh;
+
   display: flex;
+
   justify-content: center;
   align-items: flex-start;
+
   background: #ffffff !important;
+
+  overflow: visible;
 }
+
 
 .scaler {
   position: relative;
   flex: none;
 }
 
+
 .screen {
   width: 2160px;
   height: 3840px;
+
   transform-origin: top left;
+
   position: relative;
+
   overflow: hidden;
+
   background: #ffffff;
-  padding: 58px 54px 58px;
+
+  padding:
+    58px
+    54px
+    58px;
 }
+
 
 .screen::before {
   content: "";
+
   position: absolute;
+
   inset: 22px;
-  border: 4px solid var(--gold);
+
+  border:
+    4px
+    solid
+    var(--gold);
+
   pointer-events: none;
 }
 
+
 .corner {
   position: absolute;
+
   color: var(--gold);
-  font: 56px Georgia, serif;
+
+  font:
+    56px
+    Georgia,
+    serif;
+
   z-index: 2;
 }
 
-.c1 { left: 34px; top: 22px; }
-.c2 { right: 34px; top: 22px; transform: scaleX(-1); }
-.c3 { left: 34px; bottom: 22px; transform: scaleY(-1); }
-.c4 { right: 34px; bottom: 22px; transform: scale(-1); }
+
+.c1 {
+  left: 34px;
+  top: 22px;
+}
+
+
+.c2 {
+  right: 34px;
+  top: 22px;
+
+  transform:
+    scaleX(-1);
+}
+
+
+.c3 {
+  left: 34px;
+  bottom: 22px;
+
+  transform:
+    scaleY(-1);
+}
+
+
+.c4 {
+  right: 34px;
+  bottom: 22px;
+
+  transform:
+    scale(-1);
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
 
 .brand {
   text-align: center;
+
   position: relative;
+
   z-index: 1;
 }
 
+
 .brand img {
   width: 760px;
+
   max-height: 245px;
+
   object-fit: contain;
+
   display: block;
-  margin: 0 auto 2px;
+
+  margin:
+    0
+    auto
+    2px;
 }
+
 
 .kicker {
   font-size: 28px;
+
   letter-spacing: .30em;
+
   text-transform: uppercase;
+
   color: var(--ink);
+
+  margin-top: 0;
 }
 
+
 .title {
-  margin: 12px 0 0;
-  font: 500 118px/.88 Georgia, "Times New Roman", serif;
+  margin:
+    12px
+    0
+    0;
+
+  font:
+    500
+    118px/.88
+    Georgia,
+    "Times New Roman",
+    serif;
+
   letter-spacing: .025em;
+
   text-transform: uppercase;
 }
+
 
 .title span {
   display: block;
+
   color: var(--gold);
+
   font-size: 86px;
+
   letter-spacing: .20em;
+
   margin-top: 12px;
 }
 
+
 .ornament {
-  margin: 12px auto 0;
+  margin:
+    12px
+    auto
+    0;
+
   width: 820px;
+
   display: flex;
+
   align-items: center;
+
   gap: 18px;
+
   color: var(--gold);
 }
+
 
 .ornament::before,
 .ornament::after {
   content: "";
+
   height: 2px;
+
   background: var(--gold);
+
   flex: 1;
+
   opacity: .75;
 }
 
+
 .ornament b {
-  font: 400 30px Georgia, serif;
+  font:
+    400
+    30px
+    Georgia,
+    serif;
 }
 
+
+/* =========================
+   MENU
+========================= */
+
+
 .menu {
-  margin: 42px auto 0;
+  margin:
+    42px
+    auto
+    0;
+
   width: 95%;
+
   display: grid;
-  grid-template-columns: .74fr 1fr 1fr;
+
+  grid-template-columns:
+    .74fr
+    1fr
+    1fr;
+
   gap: 30px;
+
   align-items: stretch;
+
   min-height: 2830px;
 }
 
+
 .panel {
   position: relative;
-  border: 2px solid var(--line);
+
+  border:
+    2px
+    solid
+    var(--line);
+
   background: #ffffff;
-  padding: 26px 24px 26px;
+
+  padding:
+    26px
+    24px
+    26px;
+
   border-radius: 16px;
 }
 
+
 .panel-title {
-  margin: -46px 0 24px;
+  margin:
+    -46px
+    0
+    24px;
+
   background: var(--black);
-  color: var(--gold-light);
-  border: 4px solid var(--gold);
+
+  color: var(--gold2);
+
+  border:
+    4px
+    solid
+    var(--gold);
+
   border-radius: 14px;
-  padding: 18px 16px;
+
+  padding:
+    18px
+    16px;
+
   text-align: center;
+
   font-size: 38px;
+
   font-weight: 800;
+
   letter-spacing: .09em;
+
   text-transform: uppercase;
 }
+
 
 .panel-title::before {
   content: "❧";
+
   margin-right: 10px;
+
   color: var(--gold);
 }
+
 
 .panel-title::after {
   content: "❧";
+
   margin-left: 10px;
+
   color: var(--gold);
+
   display: inline-block;
-  transform: scaleX(-1);
+
+  transform:
+    scaleX(-1);
 }
+
+
+/* =========================
+   PREFAB
+========================= */
+
 
 .prefab .item {
-  border-bottom: 2px solid rgba(181, 133, 47, .32);
-  padding: 38px 0 42px;
-}
-
-.prefab .name {
-  font: 700 70px/1.01 Georgia, "Times New Roman", serif;
-  text-transform: uppercase;
-}
-
-.prefab .price {
-  font-size: 61px;
-  font-weight: 800;
-}
-
-.prefab .meta {
-  margin-top: 12px;
-  font-size: 28px;
-  letter-spacing: .045em;
-}
-
-.prefab .wheat {
-  margin: 70px auto 20px;
-  width: 88%;
-  text-align: center;
-  color: var(--gold);
-  font: 64px Georgia, serif;
-  letter-spacing: .11em;
-}
-
-.onegram .item {
-  border-bottom: 2px solid rgba(181, 133, 47, .24);
-  padding: 19px 0 21px;
-}
-
-.onegram .name {
-  font-size: 43px;
-  line-height: 1.02;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.onegram .price {
-  font-size: 42px;
-  font-weight: 800;
-}
-
-.onegram .meta {
-  margin-top: 6px;
-  font-size: 21px;
-  letter-spacing: .025em;
-}
-
-.topline {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: 14px;
-}
-
-.meta {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  color: var(--gold);
-  text-transform: uppercase;
-  font-weight: 700;
-}
-
-.deal {
-  color: #ffffff;
-  background: var(--gold);
-  padding: 5px 9px;
-  border-radius: 5px;
-  white-space: nowrap;
-  font-weight: 800;
-}
-
-.footer {
-  position: absolute;
-  left: 50%;
-  bottom: 105px;
-  transform: translateX(-50%);
-  width: 80%;
-  background: var(--black);
-  color: var(--gold-light);
-  border: 4px solid var(--gold);
-  border-radius: 14px;
-  padding: 24px 36px;
-  text-align: center;
-}
-
-.footer strong {
-  display: block;
-  font-size: 31px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-}
-
-.footer span {
-  display: block;
-  margin-top: 8px;
-  font-size: 18px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-
-.loading {
-  position: absolute;
-  left: 50%;
-  top: 54%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: var(--gold);
-  font-size: 34px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-</style>
-</head>
-
-<body>
-
-<div class="viewport">
-  <div class="scaler" id="scaler">
-
-    <main class="screen" id="screen">
-
-      <div class="corner c1">⌜</div>
-      <div class="corner c2">⌜</div>
-      <div class="corner c3">⌜</div>
-      <div class="corner c4">⌜</div>
-
-      <header class="brand">
-        <img src="cremers-logo.png" alt="Cremers Est. 1990">
-
-        <div class="kicker">
-          Coffeeshop · Since 1990
-        </div>
-
-        <h1 class="title">
-          Californian
-          <span>Specials</span>
-        </h1>
-
-        <div class="ornament">
-          <b>✦</b>
-        </
+  border-bottom:
+    2px
+    solid
+    rgba(
+      181,
+      133,
