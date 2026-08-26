@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="only light">
+<title>Cremers — Joints & Edibles</title>
+
+<style>
+:root{--gold:#b5852f;--gold2:#d8b46d;--line:#dfcfaa;--black:#111}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff!important;color:#111;font-family:Arial,Helvetica,sans-serif}
+body{overflow-x:hidden}
+
+.screen{
+  position:relative;
+  width:min(100vw,56.25vh);
+  height:min(177.7778vw,100vh);
+  margin:auto;
+  background:#fff;
+  overflow:hidden
+}
+@media(max-aspect-ratio:9/16){
+  .screen{width:100vw;height:177.7778vw}
+}
+
+.frame{
+  position:absolute;
+  inset:1.2%;
+  border:1px solid var(--gold);
+  padding:2.3% 3%
+}
+
+.brand{text-align:center}
+.brand img{width:36%;max-height:8%;object-fit:contain}
+.kicker{
+  font-size:clamp(7px,1vw,28px);
+  letter-spacing:.28em;
+  text-transform:uppercase
+}
+h1{
+  margin:1% 0 0;
+  font:500 clamp(30px,5.4vw,116px)/.9 Georgia,"Times New Roman",serif;
+  text-transform:uppercase
+}
+h1 span{
+  display:block;
+  color:var(--gold);
+  font-size:58%;
+  letter-spacing:.16em;
+  margin-top:.75%
+}
+
+.orn{
+  width:42%;
+  margin:1% auto 4%;
+  color:var(--gold);
+  display:flex;
+  align-items:center;
+  gap:10px
+}
+.orn:before,.orn:after{
+  content:"";
+  height:1px;
+  background:var(--gold);
+  flex:1
+}
+
+.menu{
+  width:97%;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1.03fr .97fr;
+  gap:1.5%;
+  align-items:start
+}
+
+.panel{
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:2.8% 3%;
+  background:#fff;
+  min-width:0
+}
+
+.head{
+  margin:-8% 0 4%;
+  padding:4% 2%;
+  border:2px solid var(--gold);
+  border-radius:6px;
+  background:var(--black);
+  color:var(--gold2);
+  text-align:center;
+  font-size:clamp(9px,1.5vw,38px);
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase
+}
+
+.subhead{
+  margin:4% 0 1.5%;
+  color:var(--gold);
+  font-size:clamp(8px,1.2vw,29px);
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  border-bottom:1px solid rgba(181,133,47,.35);
+  padding-bottom:1.8%
+}
+
+.item{
+  padding:3.2% 0 3.6%;
+  border-bottom:1px solid rgba(181,133,47,.24)
+}
+
+.top{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:7px;
+  align-items:baseline
+}
+
+.name{
+  font-size:clamp(9px,1.55vw,37px);
+  line-height:1.03;
+  font-weight:800;
+  text-transform:uppercase;
+  overflow-wrap:normal;
+  word-break:normal
+}
+
+.price{
+  font-size:clamp(9px,1.48vw,35px);
+  font-weight:800;
+  white-space:nowrap;
+  text-align:right
+}
+
+.deal{
+  display:inline-block;
+  margin-top:1.5%;
+  padding:2px 5px;
+  border-radius:3px;
+  background:var(--gold);
+  color:#fff;
+  font-size:clamp(6px,.78vw,19px);
+  font-weight:800;
+  letter-spacing:.04em;
+  text-transform:uppercase
+}
+
+.right-stack{
+  display:flex;
+  flex-direction:column;
+  gap:5%
+}
+
+.hash .item{
+  padding:3.3% 0 3.7%
+}
+
+.edibles .item{
+  padding:2.5% 0 2.9%
+}
+
+.edibles .name{
+  font-size:clamp(8px,1.35vw,32px)
+}
+
+.edibles .price{
+  font-size:clamp(8px,1.3vw,31px)
+}
+
+.footer{
+  position:absolute;
+  left:9%;
+  right:9%;
+  bottom:2.5%;
+  padding:1.3% 2%;
+  background:var(--black);
+  color:var(--gold2);
+  border:2px solid var(--gold);
+  border-radius:6px;
+  text-align:center
+}
+
+.footer strong{
+  display:block;
+  font-size:clamp(8px,1.25vw,31px);
+  letter-spacing:.15em;
+  text-transform:uppercase
+}
+
+.footer small{
+  display:block;
+  margin-top:.4%;
+  font-size:clamp(5px,.7vw,18px);
+  letter-spacing:.1em;
+  text-transform:uppercase
+}
+
+#loading{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  color:var(--gold);
+  text-transform:uppercase
+}
+</style>
+</head>
+
+<body>
+<main class="screen">
+<div class="frame">
+
+<header class="brand">
+  <img src="cremers-logo.png" alt="Cremers">
+  <div class="kicker">Coffeeshop · Since 1990</div>
+  <h1>Joints & Edibles <span>Pre-Rolled Selection</span></h1>
+  <div class="orn">✦</div>
+</header>
+
+<div id="loading">Loading menu…</div>
+
+<section id="menu" class="menu" hidden>
+
+  <div class="panel weed">
+    <div class="head">Pre-Rolled Weed Joints</div>
+
+    <div class="subhead">Pure</div>
+    <div id="pure"></div>
+
+    <div class="subhead">With Tobacco</div>
+    <div id="tobacco"></div>
+  </div>
+
+  <div class="right-stack">
+
+    <div class="panel hash">
+      <div class="head">Pre-Rolled Hash Joints</div>
+      <div id="hash"></div>
+    </div>
+
+    <div class="panel edibles">
+      <div class="head">Edibles</div>
+      <div id="edibles"></div>
+    </div>
+
+  </div>
+
+</section>
+
+<footer class="footer">
+  <strong>Premium Cremers Selection</strong>
+  <small>Pre-rolled joints · Hash joints · Edibles</small>
+</footer>
+
+</div>
+</main>
+
+<script>
+const URL="https://script.google.com/macros/s/AKfycbx2tgVQp13EdurZ22_HAafU_DK_9EKnx6bQRdx8JLLBedQr9J7xQxkxICfOwsWgpVveYA/exec";
+
+const safe=v=>String(v??"")
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+
+function euro(v){
+  const raw=String(v??"").trim().replace("€","").replace(",",".");
+  const n=Number(raw);
+
+  return Number.isFinite(n)
+    ? "€"+n.toLocaleString("nl-NL",{minimumFractionDigits:n%1===0?0:2,maximumFractionDigits:2})
+    : safe(v);
+}
+
+function card(x){
+  return `<article class="item">
+    <div class="top">
+      <div class="name">${safe(x.Product)}</div>
+      <div class="price">${euro(x.Price)}</div>
+    </div>
+    ${x.Deal ? `<span class="deal">${safe(x.Deal)}</span>` : ""}
+  </article>`;
+}
+
+function cremersMenuData(rows){
+  const clean=rows.filter(x=>String(x.Product??"").trim()!=="");
+
+  const pure=clean.filter(x=>String(x.Category??"").trim().toLowerCase()==="pure");
+  const tobacco=clean.filter(x=>String(x.Category??"").trim().toLowerCase()==="with tobacco");
+  const hash=clean.filter(x=>String(x.Category??"").trim().toLowerCase()==="hash joints");
+  const edibles=clean.filter(x=>String(x.Category??"").trim().toLowerCase()==="edibles");
+
+  document.getElementById("pure").innerHTML=pure.map(card).join("");
+  document.getElementById("tobacco").innerHTML=tobacco.map(card).join("");
+  document.getElementById("hash").innerHTML=hash.map(card).join("");
+  document.getElementById("edibles").innerHTML=edibles.map(card).join("");
+
+  document.getElementById("loading").hidden=true;
+  document.getElementById("menu").hidden=false;
+
+  localStorage.setItem("cremersJointsEdiblesCache",JSON.stringify(rows));
+}
+
+try{
+  const cache=JSON.parse(localStorage.getItem("cremersJointsEdiblesCache"));
+  if(cache) cremersMenuData(cache);
+}catch(e){}
+
+async function refresh(){
+  try{
+    const response=await fetch(
+      URL+"?tab="+encodeURIComponent("Joints and Edibles")+"&_="+Date.now(),
+      {cache:"no-store"}
+    );
+
+    if(!response.ok) throw new Error("HTTP "+response.status);
+
+    const text=await response.text();
+    let rows;
+
+    try{
+      rows=JSON.parse(text);
+    }catch(e){
+      const match=text.match(/^[^(]*\((.*)\)\s*;?\s*$/s);
+      if(!match) throw new Error("Unexpected Apps Script response");
+      rows=JSON.parse(match[1]);
+    }
+
+    if(!Array.isArray(rows)) throw new Error("Menu data is not an array");
+
+    cremersMenuData(rows);
+
+  }catch(error){
+    console.error("Live menu update failed:",error);
+
+    const loading=document.getElementById("loading");
+
+    if(!document.getElementById("menu").hidden){
+      loading.hidden=true;
+    }else{
+      loading.textContent="Menu data is taking longer than expected…";
+    }
+  }
+}
+
+refresh();
+setInterval(refresh,60000);
+</script>
+
+</body>
+</html>
