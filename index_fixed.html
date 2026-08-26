@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Cremers — Californian Specials</title>
+<style>
+:root {
+  color-scheme: light;
+  --paper:#ffffff;
+  --ink:#101010;
+  --muted:#736b60;
+  --gold:#b58a3d;
+  --line:#d8d1c5;
+  --panel:#171717;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff!important;color:#111!important;font-family:Arial,Helvetica,sans-serif}
+body{min-height:100vh}
+.viewport{
+  width:100vw;
+  min-height:100vh;
+  background:#fff!important;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  overflow:hidden;
+}
+.screen{
+  width:2160px;
+  height:3840px;
+  transform-origin:top left;
+  background:#fff!important;
+  padding:135px 115px 100px;
+  color:#111!important;
+  flex:none;
+}
+.scaler{position:relative}
+.brand{text-align:center}
+.brand img{width:820px;max-height:350px;object-fit:contain;display:block;margin:0 auto 35px}
+.brand-line{height:2px;background:var(--gold);opacity:.55;margin:0 0 45px}
+h1{margin:0;font-size:92px;letter-spacing:.13em;font-weight:500;text-transform:uppercase}
+.subtitle{margin-top:16px;font-size:27px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.menu-grid{display:grid;grid-template-columns:.78fr 1.35fr;gap:72px;margin-top:80px;height:2920px}
+.section{min-width:0}
+.section + .section{border-left:2px solid var(--line);padding-left:72px}
+.section-title{
+  background:var(--panel);color:#d8b06a;padding:24px 28px;text-align:center;
+  font-size:40px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;
+  border-radius:8px;margin-bottom:34px
+}
+.items{display:flex;flex-direction:column;gap:16px}
+.item{border-bottom:2px solid #ece7de;padding:0 0 14px}
+.topline{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:baseline}
+.name{font-weight:750;font-size:33px;line-height:1.08;text-transform:uppercase;letter-spacing:.01em}
+.price{font-weight:750;font-size:35px;white-space:nowrap}
+.meta{margin-top:7px;display:flex;justify-content:space-between;gap:20px;font-size:22px;line-height:1.15;color:var(--muted)}
+.farm{text-transform:uppercase;letter-spacing:.055em}
+.deal{color:var(--gold);font-weight:700;white-space:nowrap}
+.footer{border-top:2px solid var(--line);margin-top:55px;padding-top:24px;text-align:center;color:var(--muted);font-size:22px;letter-spacing:.16em;text-transform:uppercase}
+.status{margin-top:120px;text-align:center;font-size:30px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="viewport"><div class="scaler" id="scaler"><main class="screen" id="screen">
+  <header class="brand">
+    <img src="cremers-logo.png" alt="Cremers Est. 1990">
+    <div class="brand-line"></div>
+    <h1>Californian Specials</h1>
+    <div class="subtitle">Premium selection</div>
+  </header>
+
+  <div id="status" class="status">Loading menu…</div>
+
+  <section id="menu" class="menu-grid" hidden>
+    <div class="section">
+      <div class="section-title">3.5 Gram Prefab</div>
+      <div class="items" id="prefab"></div>
+    </div>
+    <div class="section">
+      <div class="section-title">1 Gram</div>
+      <div class="items" id="onegram"></div>
+    </div>
+  </section>
+
+  <div class="footer">Premium California · Premium Quality · Cremers Est. 1990</div>
+</main></div></div>
+
+<script>
+const PUB_ID = "2PACX-1vTJCoa61jffwkjHzCWynvWuD-LlPhU4ECrA8LdzDKaCwaM63zkcB43EznQoecinLaZQqse4KyoXSSbL";
+
+function esc(s){
+  return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function money(v){
+  let n = Number(String(v).replace(',','.'));
+  if(!Number.isFinite(n)) return esc(v);
+  return '€' + n.toLocaleString('nl-NL',{minimumFractionDigits:n%1===0?0:2,maximumFractionDigits:2});
+}
+function trueish(v){
+  return ['true','yes','1','x','✓','checked'].includes(String(v).trim().toLowerCase());
+}
+function addItem(container,x){
+  const el=document.createElement('article'); el.className='item';
+  el.innerHTML=`<div class="topline"><div class="name">${esc(x.Product)}</div><div class="price">${money(x.Price)}</div></div>
+  <div class="meta"><span class="farm">${esc(x.Farm||'')}</span>${x.Deal?`<span class="deal">${esc(x.Deal)}</span>`:''}</div>`;
+  container.appendChild(el);
+}
+function renderRows(rows){
+  const headers = rows[0].map(v=>String(v||'').trim());
+  const data = rows.slice(1).map(r=>Object.fromEntries(headers.map((h,i)=>[h,String(r[i]??'').trim()])))
+    .filter(x=>String(x.Screen).trim()==='1' && trueish(x.Available) && x.Product);
+
+  const p=document.getElementById('prefab'), o=document.getElementById('onegram');
+  p.innerHTML=''; o.innerHTML='';
+  data.filter(x=>String(x.Section).toLowerCase().includes('3.5')).forEach(x=>addItem(p,x));
+  data.filter(x=>String(x.Section).toLowerCase().includes('1 gram')).forEach(x=>addItem(o,x));
+
+  document.getElementById('status').hidden=true;
+  document.getElementById('menu').hidden=false;
+  fitToViewport();
+}
+function gvizResponse(resp){
+  try {
+    const table=resp.table;
+    const rows=[];
+    const headers=table.cols.map(c=>c.label||c.id||'');
+    rows.push(headers);
+    for(const r of table.rows) rows.push(r.c.map(c=>c ? (c.f ?? c.v ?? '') : ''));
+    renderRows(rows);
+  } catch(e) {
+    console.error(e);
+    document.getElementById('status').textContent='Menu temporarily unavailable';
+  }
+}
+function loadSheet(){
+  const old=document.getElementById('gviz');
+  if(old) old.remove();
+  const s=document.createElement('script');
+  s.id='gviz';
+  s.src=`https://docs.google.com/spreadsheets/d/e/${PUB_ID}/gviz/tq?tqx=responseHandler:gvizResponse&sheet=Sheet1&_=${Date.now()}`;
+  s.onerror=()=>document.getElementById('status').textContent='Menu temporarily unavailable';
+  document.body.appendChild(s);
+}
+function fitToViewport(){
+  const screen=document.getElementById('screen');
+  const scaler=document.getElementById('scaler');
+  const scale=Math.min(window.innerWidth/2160, window.innerHeight/3840);
+  screen.style.transform=`scale(${scale})`;
+  scaler.style.width=(2160*scale)+'px';
+  scaler.style.height=(3840*scale)+'px';
+}
+window.addEventListener('resize',fitToViewport);
+fitToViewport();
+loadSheet();
+setInterval(loadSheet,60000);
+</script>
+</body>
+</html>
