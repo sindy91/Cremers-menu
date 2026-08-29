@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Cremers Promotions</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff;color:#111}
+  body{font-family:Arial,Helvetica,sans-serif}
+  #stage{
+    position:fixed; inset:0;
+    background:#fff;
+  }
+  .frame{
+    position:absolute; inset:1.2%;
+    border:2px solid #b78735;
+    overflow:hidden;
+  }
+  .frame:before,.frame:after{
+    content:""; position:absolute; left:4%; right:4%; height:1px;
+    background:linear-gradient(90deg,transparent,#b78735 18%,#b78735 82%,transparent);
+    z-index:4;
+  }
+  .frame:before{top:3.5%}
+  .frame:after{bottom:3.5%}
+
+  .slide{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:11% 8% 12%;
+    text-align:center;
+    opacity:0; transform:scale(1.015);
+    transition:opacity .9s ease,transform 1.2s ease;
+    pointer-events:none;
+  }
+  .slide.show{opacity:1;transform:scale(1);pointer-events:auto}
+
+  .logo{
+    width:43%; max-width:920px; height:auto;
+    margin-bottom:8%;
+    object-fit:contain;
+  }
+  .eyebrow{
+    color:#a97828;
+    font-weight:700;
+    font-size:clamp(18px,1.55vw,58px);
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    margin-bottom:2.6%;
+  }
+  h1{
+    margin:0;
+    max-width:92%;
+    font-family:Georgia,"Times New Roman",serif;
+    font-weight:500;
+    font-size:clamp(64px,7.4vw,280px);
+    line-height:.94;
+    letter-spacing:-.025em;
+    text-transform:uppercase;
+  }
+  .ornament{
+    display:flex; align-items:center; gap:24px;
+    width:62%; margin:5% auto;
+  }
+  .ornament:before,.ornament:after{
+    content:""; height:2px; background:#b78735; flex:1;
+  }
+  .diamond{width:18px;height:18px;border:2px solid #b78735;transform:rotate(45deg)}
+  .copy{
+    max-width:80%;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(28px,3.1vw,116px);
+    line-height:1.16;
+    letter-spacing:.015em;
+  }
+  .since{
+    position:absolute; bottom:6.4%;
+    color:#a97828;
+    font-size:clamp(15px,1.25vw,46px);
+    letter-spacing:.25em;
+    text-transform:uppercase;
+    font-weight:700;
+  }
+
+  .with-image{padding-top:7%}
+  .with-image .logo{width:30%;margin-bottom:3%}
+  .photo{
+    width:82%; height:36%;
+    margin:2.5% auto 4%;
+    object-fit:contain;
+    border:none;
+  }
+  .with-image h1{font-size:clamp(50px,5.7vw,215px)}
+  .with-image .copy{font-size:clamp(24px,2.6vw,96px)}
+  #status{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:Georgia,serif;font-size:clamp(24px,2.5vw,80px);color:#9b762f;
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="frame">
+    <div id="status">Loading Cremers promotions…</div>
+    <div id="slides"></div>
+  </div>
+</div>
+
+<script>
+const URL="https://script.google.com/macros/s/AKfycbx2tgVQp13EdurZ22_HAafU_DK_9EKnx6bQRdx8JLLBedQr9J7xQxkxICfOwsWgpVveYA/exec";
+const TAB="Promotions";
+
+const truthy=v=>["true","yes","1","x","✓","checked"].includes(String(v||"").trim().toLowerCase());
+const safe=v=>String(v||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+
+let promotions=[];
+let index=0;
+let timer=null;
+let signature="";
+
+function durationMs(row){
+  const n=parseFloat(String(row.Duration||"").replace(",","."));
+  return (Number.isFinite(n)&&n>0?n:10)*1000;
+}
+
+function slideMarkup(row,i){
+  const image=String(row["Image URL"]||"").trim();
+  return `
+    <section class="slide ${image?"with-image":""}" data-index="${i}">
+      <img class="logo" src="cremers-logo.png" alt="Cremers">
+      <div class="eyebrow">Cremers · The Hague</div>
+      ${image?`<img class="photo" src="${safe(image)}" alt="">`:""}
+      <h1>${safe(row.Headline||"CREMERS")}</h1>
+      <div class="ornament"><span class="diamond"></span></div>
+      ${row.Text?`<div class="copy">${safe(row.Text)}</div>`:""}
+      <div class="since">Since 1990</div>
+    </section>`;
+}
+
+function render(rows){
+  promotions=rows.filter(r=>truthy(r.Active)&&String(r.Headline||"").trim());
+  const status=document.getElementById("status");
+  const box=document.getElementById("slides");
+
+  if(!promotions.length){
+    box.innerHTML="";
+    status.textContent="CREMERS · SINCE 1990";
+    status.style.display="flex";
+    clearTimeout(timer);
+    return;
+  }
+
+  status.style.display="none";
+  box.innerHTML=promotions.map(slideMarkup).join("");
+  index=0;
+  showCurrent();
+}
+
+function showCurrent(){
+  clearTimeout(timer);
+  const slides=[...document.querySelectorAll(".slide")];
+  if(!slides.length)return;
+  slides.forEach((s,i)=>s.classList.toggle("show",i===index));
+  timer=setTimeout(()=>{
+    index=(index+1)%promotions.length;
+    showCurrent();
+  },durationMs(promotions[index]));
+}
+
+function parseResponse(text){
+  try{return JSON.parse(text)}
+  catch(e){
+    const m=text.match(/^[^(]*\((.*)\)\s*;?\s*$/s);
+    if(!m)throw new Error("Unexpected Apps Script response");
+    return JSON.parse(m[1]);
+  }
+}
+
+async function refresh(){
+  try{
+    const res=await fetch(URL+"?tab="+encodeURIComponent(TAB)+"&_="+Date.now(),{cache:"no-store"});
+    if(!res.ok)throw new Error("HTTP "+res.status);
+    const rows=parseResponse(await res.text());
+    if(!Array.isArray(rows))throw new Error("Promotions data is not an array");
+    const next=JSON.stringify(rows);
+    if(next!==signature){
+      signature=next;
+      localStorage.setItem("cremersPromotionsCache",next);
+      render(rows);
+    }
+  }catch(err){
+    console.error(err);
+  }
+}
+
+try{
+  const cached=JSON.parse(localStorage.getItem("cremersPromotionsCache")||"null");
+  if(Array.isArray(cached)){
+    signature=JSON.stringify(cached);
+    render(cached);
+  }
+}catch(e){}
+
+refresh();
+setInterval(refresh,60000);
+</script>
+</body>
+</html>
