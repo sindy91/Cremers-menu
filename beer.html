@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cremers Café - Beer Menu</title>
+<style>
+* { box-sizing: border-box; }
+html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    overflow: hidden; background: #ffffff;
+}
+body { font-family: Arial, Helvetica, sans-serif; color: #111111; }
+.menu {
+    width: 1920px; height: 1080px; padding: 48px 72px 42px;
+    display: flex; flex-direction: column; background: #ffffff;
+    transform-origin: top left;
+}
+.header {
+    height: 205px; display: grid; grid-template-columns: 1fr 2fr 1fr;
+    align-items: center; border-bottom: 3px solid #3F4937; padding-bottom: 28px;
+}
+.header-side {
+    color: #3F4937; text-transform: uppercase; letter-spacing: 6px;
+    font-family: Georgia, "Times New Roman", serif;
+}
+.header-side.left { font-size: 19px; line-height: 1.5; }
+.header-side.right { text-align: right; font-size: 19px; line-height: 1.5; }
+.logo-area { text-align: center; }
+.logo {
+    font-family: Georgia, "Times New Roman", serif; font-size: 92px;
+    font-weight: bold; letter-spacing: 2px; line-height: 0.9;
+}
+.cafe {
+    color: #3F4937; font-family: Georgia, "Times New Roman", serif;
+    letter-spacing: 12px; font-size: 26px; margin-bottom: 6px;
+}
+.since {
+    color: #3F4937; font-family: Georgia, "Times New Roman", serif;
+    letter-spacing: 11px; font-size: 19px; margin-top: 15px;
+}
+.section-title {
+    height: 90px; display: flex; align-items: center;
+    font-family: Georgia, "Times New Roman", serif; color: #3F4937;
+    font-size: 42px; letter-spacing: 9px; text-transform: uppercase; font-weight: bold;
+}
+.columns {
+    flex: 1; display: grid; grid-template-columns: 1fr 1fr;
+    column-gap: 76px; min-height: 0;
+}
+.column { min-width: 0; }
+.column:first-child { padding-right: 38px; }
+.column:last-child { padding-left: 38px; border-left: 2px solid #d8d8d3; }
+.beer {
+    height: 62px; border-bottom: 1px solid #d8d8d3; padding: 5px 4px 6px;
+    display: grid; grid-template-columns: minmax(0, 1fr) 120px 145px;
+    grid-template-rows: 29px 22px; column-gap: 18px;
+}
+.beer-name {
+    grid-column: 1; grid-row: 1; font-size: 27px; font-weight: 700;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.amount { grid-column: 2; grid-row: 1; font-size: 24px; text-align: right; white-space: nowrap; }
+.price {
+    grid-column: 3; grid-row: 1 / span 2; align-self: center;
+    text-align: right; font-size: 30px; font-weight: 700; white-space: nowrap;
+}
+.brewery {
+    grid-column: 1; grid-row: 2; color: #3F4937; font-size: 20px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.alcohol {
+    grid-column: 2; grid-row: 2; color: #3F4937; font-size: 20px;
+    text-align: right; white-space: nowrap;
+}
+.footer {
+    height: 68px; display: flex; align-items: flex-end; justify-content: center;
+    color: #3F4937; font-family: Georgia, "Times New Roman", serif;
+    font-size: 17px; letter-spacing: 8px; text-transform: uppercase;
+}
+.message {
+    width: 100%; margin-top: 160px; text-align: center;
+    color: #3F4937; font-size: 36px;
+}
+</style>
+</head>
+<body>
+<div class="menu" id="menu">
+    <header class="header">
+        <div class="header-side left">GOOD BEER<br>GOOD FOOD<br>GOOD COMPANY</div>
+        <div class="logo-area">
+            <div class="cafe">CAFÉ</div>
+            <div class="logo">CREMERS</div>
+            <div class="since">SINCE 1990</div>
+        </div>
+        <div class="header-side right">DRINK<br>RELAX<br>ENJOY</div>
+    </header>
+    <div class="section-title">BEER</div>
+    <main class="columns">
+        <div class="column" id="leftColumn"></div>
+        <div class="column" id="rightColumn"></div>
+    </main>
+    <footer class="footer">GOOD BEER BRINGS PEOPLE TOGETHER</footer>
+</div>
+<script>
+const DATA_URL =
+"https://script.google.com/macros/s/AKfycbzM2ocIa74JX1Zu2WaAf-Gac_DRX7y6u4qzVO-w7b65hBehjAq8TcpzlJjyUc2RoUEq/exec?tab=Beer";
+
+function formatPrice(value) {
+    if (value === "" || value === null || value === undefined) return "";
+    const number = typeof value === "number" ? value :
+        parseFloat(String(value).replace(",", ".").replace(/[^\d.-]/g, ""));
+    if (isNaN(number)) return value;
+    return "€ " + number.toFixed(2).replace(".", ",");
+}
+
+function formatAlcohol(value) {
+    if (value === "" || value === null || value === undefined) return "";
+    const text = String(value).trim();
+    if (text.includes("%")) return text;
+    return text + "%";
+}
+
+function createBeer(item) {
+    const beer = document.createElement("div");
+    beer.className = "beer";
+
+    const name = document.createElement("div");
+    name.className = "beer-name";
+    name.textContent = item["Beer Name"] || "";
+
+    const brewery = document.createElement("div");
+    brewery.className = "brewery";
+    brewery.textContent = item["Brewery"] || "";
+
+    const amount = document.createElement("div");
+    amount.className = "amount";
+    amount.textContent = item["Amount"] || "";
+
+    const alcohol = document.createElement("div");
+    alcohol.className = "alcohol";
+    alcohol.textContent = formatAlcohol(item["Alcohol %"]);
+
+    const price = document.createElement("div");
+    price.className = "price";
+    price.textContent = formatPrice(item["Price"]);
+
+    beer.appendChild(name);
+    beer.appendChild(brewery);
+    beer.appendChild(amount);
+    beer.appendChild(alcohol);
+    beer.appendChild(price);
+    return beer;
+}
+
+async function loadMenu() {
+    const left = document.getElementById("leftColumn");
+    const right = document.getElementById("rightColumn");
+
+    try {
+        const response = await fetch(DATA_URL + "&t=" + Date.now());
+        if (!response.ok) throw new Error("Could not load menu");
+        const data = await response.json();
+
+        const beers = data.filter(item => {
+            const available = item["Available"];
+            const checked = available === true || String(available).toLowerCase() === "true";
+            return checked && item["Beer Name"];
+        }).slice(0, 25);
+
+        left.innerHTML = "";
+        right.innerHTML = "";
+
+        if (beers.length === 0) {
+            left.innerHTML = '<div class="message">Beer menu coming soon</div>';
+            return;
+        }
+
+        const split = Math.ceil(beers.length / 2);
+        beers.slice(0, split).forEach(item => left.appendChild(createBeer(item)));
+        beers.slice(split).forEach(item => right.appendChild(createBeer(item)));
+    } catch (error) {
+        console.error(error);
+        left.innerHTML = '<div class="message">Unable to load menu</div>';
+    }
+}
+
+function scaleMenu() {
+    const menu = document.getElementById("menu");
+    const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    menu.style.transform = `scale(${scale})`;
+}
+
+scaleMenu();
+window.addEventListener("resize", scaleMenu);
+loadMenu();
+setInterval(loadMenu, 60000);
+</script>
+</body>
+</html>
