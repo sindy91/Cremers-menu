@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cremers Café - Beer Menu</title>
+<style>
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+}
+body { font-family: Arial, Helvetica, sans-serif; color: #111; }
+.menu {
+  width: 1920px;
+  height: 1080px;
+  padding: 34px 62px 30px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  transform-origin: top left;
+}
+.header {
+  height: 170px;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr 1fr;
+  align-items: center;
+  border-bottom: 3px solid #3F4937;
+  padding-bottom: 20px;
+}
+.header-side {
+  color: #3F4937;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  line-height: 1.45;
+}
+.header-side.right { text-align: right; }
+.logo-area { text-align: center; }
+.logo-img {
+  display: block;
+  max-width: 500px;
+  max-height: 118px;
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+}
+.section-title {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  color: #3F4937;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+}
+.list {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.beer {
+  min-height: 31px;
+  flex: 1 1 0;
+  border-bottom: 1px solid #d8d8d3;
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) 150px 150px;
+  grid-template-rows: 1fr 1fr;
+  column-gap: 18px;
+  padding: 2px 4px;
+  align-items: center;
+}
+.tap {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  align-self: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: #3F4937;
+  text-align: center;
+}
+.beer-name {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 25px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.brewery {
+  grid-column: 2;
+  grid-row: 2;
+  color: #3F4937;
+  font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.amount {
+  grid-column: 3;
+  grid-row: 1;
+  font-size: 22px;
+  text-align: right;
+  white-space: nowrap;
+}
+.alcohol {
+  grid-column: 3;
+  grid-row: 2;
+  color: #3F4937;
+  font-size: 18px;
+  text-align: right;
+  white-space: nowrap;
+}
+.price {
+  grid-column: 4;
+  grid-row: 1 / span 2;
+  align-self: center;
+  text-align: right;
+  font-size: 28px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.footer {
+  height: 48px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  color: #3F4937;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
+  letter-spacing: 7px;
+  text-transform: uppercase;
+}
+.message {
+  margin: auto;
+  color: #3F4937;
+  font-size: 34px;
+}
+</style>
+</head>
+<body>
+<div class="menu" id="menu">
+  <header class="header">
+    <div class="header-side">GOOD BEER<br>GOOD FOOD<br>GOOD COMPANY</div>
+    <div class="logo-area">
+      <img src="cremers-logo.png" alt="Cremers" class="logo-img">
+    </div>
+    <div class="header-side right">DRINK<br>RELAX<br>ENJOY</div>
+  </header>
+
+  <div class="section-title">BEER</div>
+  <main class="list" id="beerList"></main>
+  <footer class="footer">GOOD BEER BRINGS PEOPLE TOGETHER</footer>
+</div>
+
+<script>
+const DATA_URL = "https://script.google.com/macros/s/AKfycbzM2ocIa74JX1Zu2WaAf-Gac_DRX7y6u4qzVO-w7b65hBehjAq8TcpzlJjyUc2RoUEq/exec?tab=Beer";
+
+function formatPrice(value) {
+  if (value === "" || value === null || value === undefined) return "";
+  const number = typeof value === "number" ? value : parseFloat(String(value).replace(",", ".").replace(/[^\d.-]/g, ""));
+  if (isNaN(number)) return String(value);
+  return "€ " + number.toFixed(2).replace(".", ",");
+}
+
+function formatAlcohol(value) {
+  if (value === "" || value === null || value === undefined) return "";
+  const text = String(value).trim();
+  return text.includes("%") ? text : text + "%";
+}
+
+function createBeer(item) {
+  const row = document.createElement("div");
+  row.className = "beer";
+
+  const tap = document.createElement("div");
+  tap.className = "tap";
+  tap.textContent = item["Tap"] ?? "";
+
+  const name = document.createElement("div");
+  name.className = "beer-name";
+  name.textContent = item["Beer Name"] || "";
+
+  const brewery = document.createElement("div");
+  brewery.className = "brewery";
+  brewery.textContent = item["Brewery"] || "";
+
+  const amount = document.createElement("div");
+  amount.className = "amount";
+  amount.textContent = item["Amount"] || "";
+
+  const alcohol = document.createElement("div");
+  alcohol.className = "alcohol";
+  alcohol.textContent = formatAlcohol(item["Alcohol %"]);
+
+  const price = document.createElement("div");
+  price.className = "price";
+  price.textContent = formatPrice(item["Price"]);
+
+  row.append(tap, name, brewery, amount, alcohol, price);
+  return row;
+}
+
+async function loadMenu() {
+  const list = document.getElementById("beerList");
+  try {
+    const response = await fetch(DATA_URL + "&t=" + Date.now());
+    if (!response.ok) throw new Error("Could not load menu");
+    const data = await response.json();
+
+    const beers = data.filter(item => {
+      const available = item["Available"];
+      const checked = available === true || String(available).toLowerCase() === "true";
+      return checked && item["Beer Name"];
+    }).slice(0, 25);
+
+    list.innerHTML = "";
+    if (!beers.length) {
+      list.innerHTML = '<div class="message">Beer menu coming soon</div>';
+      return;
+    }
+
+    beers.forEach(item => list.appendChild(createBeer(item)));
+  } catch (err) {
+    console.error(err);
+    list.innerHTML = '<div class="message">Unable to load menu</div>';
+  }
+}
+
+function scaleMenu() {
+  const menu = document.getElementById("menu");
+  const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  menu.style.transform = `scale(${scale})`;
+}
+
+scaleMenu();
+window.addEventListener("resize", scaleMenu);
+loadMenu();
+setInterval(loadMenu, 60000);
+</script>
+</body>
+</html>
