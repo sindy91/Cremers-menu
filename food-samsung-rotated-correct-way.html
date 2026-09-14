@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cremers Café - Food Menu</title>
+
+<style>
+:root{
+  --olive:#3F4937;
+  --black:#111111;
+  --line:#d8d8d3;
+  --bg:#ffffff;
+}
+
+*{box-sizing:border-box;}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:var(--bg);
+}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--black);
+}
+
+/* 
+   Samsung browser stays landscape.
+   The physical TV is mounted vertically.
+   We build a 2160 x 3840 portrait canvas and rotate it 90° clockwise.
+*/
+
+.rotate-shell{
+  position:absolute;
+  left:0;
+  top:0;
+  width:2160px;
+  height:3840px;
+  transform-origin:top left;
+  transform:rotate(-90deg) translateX(-100%);
+}
+
+.menu{
+  width:2160px;
+  height:3840px;
+  padding:110px 125px 95px;
+  display:flex;
+  flex-direction:column;
+  background:#ffffff;
+}
+
+/* HEADER */
+
+.header{
+  height:470px;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  border-bottom:6px solid var(--olive);
+  padding-bottom:52px;
+}
+
+.header-side{
+  color:var(--olive);
+  text-transform:uppercase;
+  letter-spacing:10px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:38px;
+  line-height:1.5;
+}
+
+.header-side.right{
+  text-align:right;
+}
+
+.logo-wrap{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.logo-wrap img{
+  width:650px;
+  max-height:270px;
+  object-fit:contain;
+}
+
+/* SECTIONS */
+
+.section{
+  margin-top:60px;
+}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:36px;
+  color:var(--olive);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:88px;
+  font-weight:700;
+  letter-spacing:15px;
+  text-transform:uppercase;
+  margin-bottom:28px;
+}
+
+.section-title::after{
+  content:"";
+  flex:1;
+  height:4px;
+  background:var(--olive);
+  opacity:.75;
+}
+
+/* FOOD ITEMS */
+
+.items{
+  display:flex;
+  flex-direction:column;
+}
+
+.food-item{
+  min-height:150px;
+  padding:22px 0 20px;
+  border-bottom:2px solid var(--line);
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  grid-template-rows:auto auto;
+  column-gap:40px;
+}
+
+.food-name{
+  grid-column:1;
+  grid-row:1;
+  font-size:64px;
+  font-weight:700;
+  line-height:1.08;
+}
+
+.food-price{
+  grid-column:2;
+  grid-row:1 / span 2;
+  align-self:center;
+  text-align:right;
+  font-size:68px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.food-amount{
+  grid-column:1;
+  grid-row:2;
+  color:var(--olive);
+  font-size:42px;
+  line-height:1.2;
+  margin-top:10px;
+}
+
+.food-amount:empty{
+  display:none;
+}
+
+/* compact when many items */
+
+.menu.compact .section{
+  margin-top:42px;
+}
+
+.menu.compact .section-title{
+  font-size:72px;
+  margin-bottom:18px;
+}
+
+.menu.compact .food-item{
+  min-height:118px;
+  padding:14px 0 12px;
+}
+
+.menu.compact .food-name{
+  font-size:52px;
+}
+
+.menu.compact .food-price{
+  font-size:56px;
+}
+
+.menu.compact .food-amount{
+  font-size:34px;
+}
+
+.menu.very-compact .section{
+  margin-top:30px;
+}
+
+.menu.very-compact .section-title{
+  font-size:64px;
+  margin-bottom:12px;
+}
+
+.menu.very-compact .food-item{
+  min-height:98px;
+  padding:10px 0 8px;
+}
+
+.menu.very-compact .food-name{
+  font-size:46px;
+}
+
+.menu.very-compact .food-price{
+  font-size:50px;
+}
+
+.menu.very-compact .food-amount{
+  font-size:30px;
+}
+
+/* FOOTER */
+
+.footer{
+  margin-top:auto;
+  padding-top:50px;
+  text-align:center;
+  color:var(--olive);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:34px;
+  letter-spacing:14px;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+.message{
+  text-align:center;
+  color:var(--olive);
+  font-size:58px;
+  padding:120px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="rotate-shell" id="rotateShell">
+
+  <div class="menu" id="menu">
+
+    <header class="header">
+
+      <div class="header-side">
+        GOOD FOOD<br>
+        GOOD DRINKS<br>
+        GOOD COMPANY
+      </div>
+
+      <div class="logo-wrap">
+        <img src="cremers-logo.png" alt="Cremers">
+      </div>
+
+      <div class="header-side right">
+        EAT<br>
+        RELAX<br>
+        ENJOY
+      </div>
+
+    </header>
+
+    <section class="section" id="savorySection">
+      <div class="section-title">SAVORY</div>
+      <div class="items" id="savoryItems"></div>
+    </section>
+
+    <section class="section" id="sweetSection">
+      <div class="section-title">SWEET</div>
+      <div class="items" id="sweetItems"></div>
+    </section>
+
+    <footer class="footer">
+      GOOD FOOD BRINGS PEOPLE TOGETHER
+    </footer>
+
+  </div>
+</div>
+
+<script>
+const DATA_URL =
+"https://script.google.com/macros/s/AKfycbzM2ocIa74JX1Zu2WaAf-Gac_DRX7y6u4qzVO-w7b65hBehjAq8TcpzlJjyUc2RoUEq/exec?tab=Food";
+
+function formatPrice(value){
+  if(value === "" || value === null || value === undefined) return "";
+
+  const number =
+    typeof value === "number"
+      ? value
+      : parseFloat(
+          String(value)
+          .replace(",", ".")
+          .replace(/[^\d.-]/g, "")
+        );
+
+  if(isNaN(number)) return String(value);
+
+  return "€ " + number.toFixed(2).replace(".", ",");
+}
+
+function createFoodItem(item){
+  const wrap = document.createElement("div");
+  wrap.className = "food-item";
+
+  const name = document.createElement("div");
+  name.className = "food-name";
+  name.textContent = item["Food Name"] || "";
+
+  const price = document.createElement("div");
+  price.className = "food-price";
+  price.textContent = formatPrice(item["Price"]);
+
+  const amount = document.createElement("div");
+  amount.className = "food-amount";
+  amount.textContent = item["Amount"] || "";
+
+  wrap.appendChild(name);
+  wrap.appendChild(price);
+  wrap.appendChild(amount);
+
+  return wrap;
+}
+
+async function loadMenu(){
+  const savoryItems = document.getElementById("savoryItems");
+  const sweetItems = document.getElementById("sweetItems");
+  const savorySection = document.getElementById("savorySection");
+  const sweetSection = document.getElementById("sweetSection");
+  const menu = document.getElementById("menu");
+
+  savoryItems.innerHTML = "";
+  sweetItems.innerHTML = "";
+
+  try{
+    const response = await fetch(DATA_URL);
+
+    if(!response.ok){
+      throw new Error("Could not load menu");
+    }
+
+    const data = await response.json();
+
+    const items = data
+      .filter(function(item){
+        const available = item["Available"];
+
+        const checked =
+          available === true ||
+          String(available).toLowerCase() === "true";
+
+        return checked && item["Food Name"];
+      })
+      .slice(0,25);
+
+    const savory = items.filter(function(item){
+      return String(item["Category"] || "").trim().toLowerCase() === "savory";
+    });
+
+    const sweet = items.filter(function(item){
+      return String(item["Category"] || "").trim().toLowerCase() === "sweet";
+    });
+
+    savory.forEach(function(item){
+      savoryItems.appendChild(createFoodItem(item));
+    });
+
+    sweet.forEach(function(item){
+      sweetItems.appendChild(createFoodItem(item));
+    });
+
+    savorySection.style.display = savory.length ? "block" : "none";
+    sweetSection.style.display = sweet.length ? "block" : "none";
+
+    menu.classList.remove("compact");
+    menu.classList.remove("very-compact");
+
+    if(items.length > 15){
+      menu.classList.add("compact");
+    }
+
+    if(items.length > 21){
+      menu.classList.remove("compact");
+      menu.classList.add("very-compact");
+    }
+
+    if(items.length === 0){
+      savorySection.style.display = "block";
+      savorySection.innerHTML =
+        '<div class="message">Food menu coming soon</div>';
+      sweetSection.style.display = "none";
+    }
+
+  }catch(error){
+    console.error(error);
+
+    savorySection.style.display = "block";
+    savorySection.innerHTML =
+      '<div class="message">Unable to load menu</div>';
+    sweetSection.style.display = "none";
+  }
+}
+
+/* Scale rotated 2160x3840 canvas to the Samsung browser viewport */
+function fitToScreen(){
+  const shell = document.getElementById("rotateShell");
+
+  const scale = Math.min(
+    window.innerWidth / 3840,
+    window.innerHeight / 2160
+  );
+
+  shell.style.transform =
+    "scale(" + scale + ") rotate(-90deg) translateX(-100%)";
+}
+
+fitToScreen();
+window.addEventListener("resize", fitToScreen);
+
+loadMenu();
+setInterval(loadMenu,60000);
+</script>
+
+</body>
+</html>
