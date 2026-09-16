@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Café Cremers Food</title><style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:#fff;color:#171914;font-family:Georgia,"Times New Roman",serif}
+body{overflow:hidden}
+.screen{position:absolute;left:0;top:100%;width:100vh;height:100vw;transform:rotate(-90deg);transform-origin:top left;padding:2.1vh 3.6vw 1.6vh;display:flex;flex-direction:column;background:#fff}
+header{height:12.5vh;display:grid;grid-template-columns:1fr 1.18fr 1fr;align-items:center;border-bottom:2px solid #3f4937;padding-bottom:1.1vh}
+.tag{color:#171914;font-family:Arial,Helvetica,sans-serif;font-weight:600;font-size:clamp(14px,1.18vw,23px);line-height:1.55;letter-spacing:.16em}
+.right{text-align:right}.logo-wrap{text-align:center}.logo{max-width:94%;max-height:9vh;object-fit:contain}
+main{flex:1;min-height:0;padding-top:1.7vh;overflow:hidden}
+#menu{height:100%;display:grid;grid-template-columns:1fr 1fr;gap:0 2.5vw;align-content:start}
+.column{min-width:0}.column+.column{border-left:2px solid #3f4937;padding-left:2.2vw}
+.category{margin:0 0 1.65vh}
+.category-title{margin:0 0 .35vh;padding:.2vh 0 .55vh;color:#35452d;border-bottom:2px solid #3f4937;font-family:Georgia,"Times New Roman",serif;font-size:clamp(29px,2.30vw,45px);line-height:1.05;font-weight:700;text-transform:uppercase}
+.item{display:grid;grid-template-columns:minmax(0,1fr) 3.4vw 7.0vw;align-items:center;column-gap:.65vw;min-height:3.05vh;padding:.38vh 0;border-bottom:1px solid #deded8}
+.name{min-width:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(24px,1.86vw,37px);font-weight:400;line-height:1.12;overflow-wrap:normal;word-break:keep-all;hyphens:none}
+.amount{color:#171914;font-family:Georgia,"Times New Roman",serif;font-size:clamp(22px,1.55vw,31px);text-align:center;white-space:nowrap}
+.price{min-width:0;text-align:right;color:#171914;font-family:Georgia,"Times New Roman",serif;font-size:clamp(24px,1.88vw,37px);font-weight:700;white-space:nowrap}
+footer{height:7vh;flex:0 0 7vh;display:flex;align-items:center;justify-content:center;text-align:center;color:#171914;border-top:2px solid #3f4937;font-family:Georgia,"Times New Roman",serif;font-size:clamp(14px,1.05vw,21px);line-height:1.35;padding:.7vh 1vw 0}
+.fallback{grid-column:1/-1;text-align:center;margin-top:20vh;color:#3f4937;font-family:Georgia,serif;font-size:3vw}
+</style></head><body><div class="screen"><header><div class="tag">GOOD FOOD<br>GOOD DRINKS<br>GOOD COMPANY</div><div class="logo-wrap"><img class="logo" src="cremers-logo.png" alt="Café Cremers"></div><div class="tag right">EAT<br>RELAX<br>ENJOY</div></header><main><div id="menu"></div></main><footer>As we use only fresh ingredients, some items may sell out.<br>Our team will be happy to recommend an alternative.</footer></div><script>
+const DATA_URL="https://script.google.com/macros/s/AKfycbzM2ocIa74JX1Zu2WaAf-Gac_DRX7y6u4qzVO-w7b65hBehjAq8TcpzlJjyUc2RoUEq/exec?tab=Food";
+const clean=v=>String(v??"").trim();const available=v=>v===true||["true","yes","1"].includes(clean(v).toLowerCase());const money=v=>{let s=clean(v);if(!s)return"";s=s.replace("€","").trim().replace(".",",");return"€ "+s};
+function section(title,items){let s=document.createElement("section");s.className="category";let h=document.createElement("h2");h.className="category-title";h.textContent=title;s.append(h);items.forEach(r=>{let x=document.createElement("div");x.className="item";let n=document.createElement("div");n.className="name";n.textContent=clean(r["Food Name"]);let a=document.createElement("div");a.className="amount";a.textContent=clean(r["Amount"]);let p=document.createElement("div");p.className="price";p.textContent=money(r["Price"]);x.append(n,a,p);s.append(x)});return s}
+function render(rows){let m=document.getElementById("menu");m.innerHTML="";let good=rows.filter(r=>available(r.Available)&&clean(r["Food Name"]));if(!good.length){m.innerHTML='<div class="fallback">Food menu coming soon</div>';return}let groups=new Map();good.forEach(r=>{let c=clean(r.Category)||"Food";if(!groups.has(c))groups.set(c,[]);groups.get(c).push(r)});let cols=[document.createElement("div"),document.createElement("div")];cols.forEach(c=>c.className="column");const left=["Meal","Meals","Vegetarian Munchies","Munchies With Meat"];const right=["Chef's Specials","Sweets"];const used=new Set();function add(col,wanted){for(const [title,items] of groups){if(clean(title).toLowerCase()===wanted.toLowerCase()&&!used.has(title)){col.append(section(title,items));used.add(title);return}}}left.forEach(x=>add(cols[0],x));right.forEach(x=>add(cols[1],x));for(const [title,items] of groups){if(!used.has(title))cols[1].append(section(title,items))}cols.forEach(c=>m.append(c))}
+async function load(){try{let r=await fetch(DATA_URL+"&_="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error(r.status);let d=await r.json();render(Array.isArray(d)?d:(d.data||d.items||[]))}catch(e){console.error(e);document.getElementById("menu").innerHTML='<div class="fallback">Food menu coming soon</div>'}}load();setInterval(load,60000);
+</script></body></html>
